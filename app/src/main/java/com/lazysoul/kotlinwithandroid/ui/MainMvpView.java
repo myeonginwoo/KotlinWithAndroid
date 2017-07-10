@@ -11,13 +11,15 @@ import java.util.List;
 
 interface MainMvpView extends BaseMvpView {
 
-    public void updateTodoList(List<Todo> todoList);
+    void onUpdateTodoList(List<Todo> todoList);
 
-    public void onRefresh(List<Todo> todoList);
+    void onRefresh(List<Todo> todoList);
 
-    public void onUpdatedTodo(Todo todo);
+    void onUpdatedTodo(Todo todo);
 
-    public void onRemovedTodo(Todo todo);
+    void onRemovedTodo(Todo todo);
 
-    public void onCreatedTodo(Todo todo);
+    void onCreatedTodo(Todo todo);
+
+    void showEmtpyView();
 }

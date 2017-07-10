@@ -5,13 +5,23 @@ import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainMvpView {
 
     private MainMvpPresenterImpl<MainActivity> presenter;
+
+    private RecyclerView recyclerView;
+
+    private SwipeRefreshLayout refreshLayout = null;
+
+    private View emptyView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +30,21 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
         initPresenter(this);
 
-        presenter.loadTotoList();
+        recyclerView = (RecyclerView) findViewById(R.id.rlv_activity_main);
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl_activity_main);
+        emptyView = findViewById(R.id.tv_activity_main_empty);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadTotoList(true);
+            }
+        });
+
+        presenter.loadTotoList(false);
     }
 
 
@@ -31,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
     }
 
     @Override
-    public void updateTodoList(List<Todo> todoList) {
-
+    public void onUpdateTodoList(List<Todo> todoList) {
+        emptyView.setVisibility(View.GONE);
+        refreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onRefresh(List<Todo> todoList) {
-
+        refreshLayout.setRefreshing(false);
+        emptyView.setVisibility(View.GONE);
+        refreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -53,5 +80,11 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
     @Override
     public void onCreatedTodo(Todo todo) {
 
+    }
+
+    @Override
+    public void showEmtpyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.GONE);
     }
 }

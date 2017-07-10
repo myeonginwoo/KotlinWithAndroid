@@ -3,7 +3,6 @@ package com.lazysoul.kotlinwithandroid.ui;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +13,8 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView>
         implements MainMvpPresenter<MvpView> {
 
     private MainMvpView view;
+
+    private List<Todo> todoList;
 
     @Override
     public void attachView(MvpView view) {
@@ -31,14 +32,26 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView>
     }
 
     @Override
-    public List<Todo> loadTotoList() {
-        List<Todo> todoList = new ArrayList<>();
-        return null;
+    public void loadTotoList(boolean fromRefresh) {
+        if (null != todoList && todoList.isEmpty()) {
+            view.showEmtpyView();
+        } else {
+            if (fromRefresh) {
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                view.onRefresh(todoList);
+            } else {
+                view.onUpdateTodoList(todoList);
+            }
+        }
     }
 
     @Override
-    public List<Todo> search(String keyword) {
-        return null;
+    public void search(String keyword) {
+
     }
 
     @Override
