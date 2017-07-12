@@ -1,4 +1,4 @@
-package com.lazysoul.kotlinwithandroid.ui;
+package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;

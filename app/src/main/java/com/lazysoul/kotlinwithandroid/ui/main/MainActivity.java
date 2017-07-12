@@ -1,4 +1,4 @@
-package com.lazysoul.kotlinwithandroid.ui;
+package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
     private RecyclerView recyclerView;
 
+    private TodoAdapter todoAdapter;
+
     private SwipeRefreshLayout refreshLayout = null;
 
     private View emptyView = null;
@@ -35,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         emptyView = findViewById(R.id.tv_activity_main_empty);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter();
+        todoAdapter = new TodoAdapter();
+        recyclerView.setAdapter(todoAdapter);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -56,12 +59,17 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
     @Override
     public void onUpdateTodoList(List<Todo> todoList) {
+        todoAdapter.addItems(todoList);
+        todoAdapter.notifyDataSetChanged();
         emptyView.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onRefresh(List<Todo> todoList) {
+        todoAdapter.clear();
+        todoAdapter.addItems(todoList);
+        todoAdapter.notifyDataSetChanged();
         refreshLayout.setRefreshing(false);
         emptyView.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);

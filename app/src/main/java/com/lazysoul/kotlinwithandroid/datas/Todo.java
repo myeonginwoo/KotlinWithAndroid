@@ -8,9 +8,14 @@ import java.util.Date;
 
 public class Todo {
 
-    private int id;
+    public Todo(int id, String body, boolean isChecked, Date createdAt) {
+        this.id = id;
+        this.body = body;
+        this.isChecked = isChecked;
+        this.createdAt = createdAt;
+    }
 
-    private String title;
+    private int id;
 
     private String body;
 
@@ -24,14 +29,6 @@ public class Todo {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getBody() {

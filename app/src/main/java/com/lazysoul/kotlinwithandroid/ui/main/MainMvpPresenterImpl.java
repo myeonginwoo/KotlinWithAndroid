@@ -1,9 +1,10 @@
-package com.lazysoul.kotlinwithandroid.ui;
+package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
+import com.lazysoul.kotlinwithandroid.managers.TodoManager;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Lazysoul on 2017. 7. 9..
@@ -13,8 +14,6 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView>
         implements MainMvpPresenter<MvpView> {
 
     private MainMvpView view;
-
-    private List<Todo> todoList;
 
     @Override
     public void attachView(MvpView view) {
@@ -33,15 +32,12 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView>
 
     @Override
     public void loadTotoList(boolean fromRefresh) {
+        TodoManager todoManager = TodoManager.getInstance();
+        ArrayList<Todo> todoList = todoManager.getTodoList();
         if (null != todoList && todoList.isEmpty()) {
             view.showEmtpyView();
         } else {
             if (fromRefresh) {
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 view.onRefresh(todoList);
             } else {
                 view.onUpdateTodoList(todoList);

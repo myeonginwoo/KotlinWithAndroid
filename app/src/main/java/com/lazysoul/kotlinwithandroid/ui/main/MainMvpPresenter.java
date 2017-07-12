@@ -1,4 +1,4 @@
-package com.lazysoul.kotlinwithandroid.ui;
+package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.common.BaseMvpPresenter;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
@@ -8,7 +8,8 @@ import com.lazysoul.kotlinwithandroid.datas.Todo;
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-interface MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> {
+interface
+MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> {
 
     void loadTotoList(boolean fromRefresh);
 
