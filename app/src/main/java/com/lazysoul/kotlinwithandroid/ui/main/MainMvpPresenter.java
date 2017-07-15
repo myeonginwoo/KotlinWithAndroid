@@ -11,7 +11,7 @@ import com.lazysoul.kotlinwithandroid.datas.Todo;
 interface
 MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> {
 
-    void loadTotoList(boolean fromRefresh);
+    void loadTotoList(boolean isFirst);
 
     void search(String keyword);
 
@@ -20,4 +20,6 @@ MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> 
     void remove(Todo todo);
 
     void delete(Todo todo);
+
+    void checked(Todo todo, boolean isChecked);
 }

@@ -22,4 +22,6 @@ interface MainMvpView extends BaseMvpView {
     void onCreatedTodo(Todo todo);
 
     void showEmtpyView();
+
+    void onSuccessCreateSampes();
 }
