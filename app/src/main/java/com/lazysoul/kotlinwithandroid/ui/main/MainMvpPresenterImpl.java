@@ -82,7 +82,7 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
         }
     }
 
-    public void createdSample() {
+    private void createdSample() {
         TodoManager.createSamleTodo(realm);
     }
 

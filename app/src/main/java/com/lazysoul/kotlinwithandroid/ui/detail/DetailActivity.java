@@ -5,9 +5,13 @@ import com.lazysoul.kotlinwithandroid.common.BaseActivity;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 /**
  * Created by Lazysoul on 2017. 7. 15..
@@ -27,6 +31,23 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
         et = (AppCompatEditText) findViewById(R.id.et_activity_detail);
 
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.onTextChanged(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         presenter.loadTodo(getIntent());
     }
 
@@ -43,6 +64,34 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!presenter.isFixed()) {
+            super.onBackPressed();
+        } else {
+            showSaveDialog();
+        }
+    }
+
+    private void showSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.msg_not_save)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        DetailActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     @Override

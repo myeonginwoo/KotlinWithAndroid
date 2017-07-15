@@ -3,6 +3,7 @@ package com.lazysoul.kotlinwithandroid.datas;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -19,6 +20,9 @@ public class Todo extends RealmObject {
     private boolean isChecked;
 
     private Date createdAt;
+
+    @Ignore
+    private boolean isFixed = false;
 
     public int getId() {
         return id;
@@ -50,5 +54,13 @@ public class Todo extends RealmObject {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFixed() {
+        return isFixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        isFixed = fixed;
     }
 }

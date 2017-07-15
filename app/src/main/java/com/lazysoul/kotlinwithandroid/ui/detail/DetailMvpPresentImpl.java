@@ -16,12 +16,14 @@ import io.realm.Realm;
  * Created by Lazysoul on 2017. 7. 15..
  */
 
-public class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
+class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
         implements DetailMvpPresenter<MvpView> {
 
-    DetailMvpView view;
+    private DetailMvpView view;
 
-    Realm realm = Realm.getDefaultInstance();
+    private Realm realm = Realm.getDefaultInstance();
+
+    private Todo beforeTodo;
 
     @Override
     public void attachView(MvpView view) {
@@ -49,20 +51,34 @@ public class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresent
 
         switch (requestType) {
             case TodoManager.REQUEST_TYPE_CREATE:
-                Todo todo = new Todo();
-                todo.setId(-1);
-                todo.setChecked(false);
-                todo.setCreatedAt(Calendar.getInstance().getTime());
-                todo.setBody("");
-                view.onUpdated(todo, true);
+                beforeTodo = new Todo();
+                beforeTodo.setId(-1);
+                beforeTodo.setChecked(false);
+                beforeTodo.setCreatedAt(Calendar.getInstance().getTime());
+                beforeTodo.setBody("");
+                view.onUpdated(beforeTodo, true);
                 break;
             case TodoManager.REQUEST_TYPE_VIEW:
                 int id = intent.getIntExtra(TodoManager.KEY_ID, -1);
                 if (id != -1) {
-                    view.onUpdated(TodoManager.load(realm, id), false);
+                    beforeTodo = TodoManager.load(realm, id);
+                    view.onUpdated(beforeTodo, false);
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onTextChanged(final String s) {
+        if (!beforeTodo.isFixed() && isChanged(s)) {
+            realm.beginTransaction();
+            beforeTodo.setFixed(true);
+            realm.commitTransaction();
+        }
+    }
+
+    private boolean isChanged(String s) {
+        return !beforeTodo.getBody().equals(s);
     }
 
     @Override
@@ -78,5 +94,10 @@ public class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresent
     @Override
     public void create(Todo todo) {
         view.onCreated(todo);
+    }
+
+    @Override
+    public boolean isFixed() {
+        return beforeTodo.isFixed();
     }
 }

@@ -74,13 +74,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void createTodo() {
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
-        startActivityForResult(intent, REQUEST_CODE_DETAIL);
-    }
-
-
     @Override
     public void initPresenter(BaseMvpView view) {
         presenter = new MainMvpPresenterImpl<>();
@@ -131,6 +124,16 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void onClicked(Todo todo) {
+        goTodo(todo);
+    }
+
+    private void createTodo() {
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
+        startActivityForResult(intent, REQUEST_CODE_DETAIL);
+    }
+
+    private void goTodo(Todo todo) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_VIEW);
         intent.putExtra(TodoManager.KEY_ID, todo.getId());

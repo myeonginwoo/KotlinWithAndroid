@@ -19,4 +19,8 @@ interface DetailMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresent
     void delete(Todo todo);
 
     void create(Todo todo);
+
+    void onTextChanged(String s);
+
+    boolean isFixed();
 }
