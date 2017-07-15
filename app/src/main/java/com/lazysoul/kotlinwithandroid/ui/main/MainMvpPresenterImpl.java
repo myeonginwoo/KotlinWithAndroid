@@ -22,19 +22,15 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private MainMvpView view;
 
-    private Realm realm = Realm.getDefaultInstance();
+    private Realm realm;
+
+    MainMvpPresenterImpl() {
+        realm = Realm.getDefaultInstance();
+    }
 
     @Override
     public void attachView(MvpView view) {
         this.view = (MainMvpView) view;
-    }
-
-    @Override
-    public void stop(boolean isFinishing) {
-        if (isFinishing) {
-            dispose();
-            realm.close();
-        }
     }
 
     @Override
@@ -107,9 +103,9 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     @Override
-    public void checked(Todo todo, boolean isChecked) {
+    public void checked(int id, boolean isChecked) {
         realm.beginTransaction();
-        todo.setChecked(isChecked);
+        TodoManager.load(realm, id).setChecked(isChecked);
         realm.commitTransaction();
     }
 }

@@ -7,7 +7,7 @@ ext {
 
     supportLibVersion = '25.3.1'
     rxandroid_version = '2.0.1'
-    realm_version = '3.5.0'
+    realm_version = '3.6.0'
 
     recycelrView =
             "com.android.support:recyclerview-v7:$supportLibVersion"

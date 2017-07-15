@@ -56,6 +56,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
             int resultType = data.getIntExtra(TodoManager.KEY_REQUEST_TYPE, -1);
@@ -87,13 +93,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void onRefresh(List<Todo> todoList) {
-        todoAdapter.clear();
-        todoAdapter.addItems(todoList);
-        emptyView.setVisibility(View.GONE);
-    }
-
-    @Override
     public void onUpdatedTodo(Todo todo) {
     }
 
@@ -118,13 +117,13 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void onChecked(Todo todo, boolean isChecked) {
-        presenter.checked(todo, isChecked);
+    public void onChecked(int id, boolean isChecked) {
+        presenter.checked(id, isChecked);
     }
 
     @Override
-    public void onClicked(Todo todo) {
-        goTodo(todo);
+    public void onClicked(int id) {
+        goTodo(id);
     }
 
     private void createTodo() {
@@ -133,10 +132,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
         startActivityForResult(intent, REQUEST_CODE_DETAIL);
     }
 
-    private void goTodo(Todo todo) {
+    private void goTodo(int id) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_VIEW);
-        intent.putExtra(TodoManager.KEY_ID, todo.getId());
+        intent.putExtra(TodoManager.KEY_ID, id);
         startActivityForResult(intent, REQUEST_CODE_DETAIL);
     }
 }

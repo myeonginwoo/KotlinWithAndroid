@@ -14,4 +14,6 @@ public interface DetailMvpView extends BaseMvpView {
     void onDeleted(Todo todo);
 
     void onCreated(Todo todo);
+
+    void onChagedSaveBt();
 }

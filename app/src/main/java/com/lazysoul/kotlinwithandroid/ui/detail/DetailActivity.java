@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 
 /**
  * Created by Lazysoul on 2017. 7. 15..
@@ -28,6 +31,8 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.tb_activity_detail));
 
         et = (AppCompatEditText) findViewById(R.id.et_activity_detail);
 
@@ -52,18 +57,9 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.destroy();
     }
 
     @Override
@@ -73,6 +69,22 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
         } else {
             showSaveDialog();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.activity_detail, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem saveMenu = menu.findItem(R.id.menu_activity_main_save);
+        saveMenu.setVisible(presenter.isFixed());
+
+        return true;
     }
 
     private void showSaveDialog() {
@@ -116,5 +128,10 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     @Override
     public void onCreated(Todo todo) {
         // TODO: 2017. 7. 15.
+    }
+
+    @Override
+    public void onChagedSaveBt() {
+        invalidateOptionsMenu();
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.lazysoul.kotlinwithandroid.ui.main.MainActivity">
+    tools:context="com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -16,7 +16,7 @@
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/tb_activity_main"
+            android:id="@+id/tb_activity_detail"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:minHeight="?attr/actionBarSize"

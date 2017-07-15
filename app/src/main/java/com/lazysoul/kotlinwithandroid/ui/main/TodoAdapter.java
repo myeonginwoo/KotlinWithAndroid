@@ -25,7 +25,7 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     private TodoListener todoListener;
 
-    public TodoAdapter(TodoListener todoListener) {
+    TodoAdapter(TodoListener todoListener) {
         this.todoListener = todoListener;
     }
 
@@ -36,7 +36,7 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     @Override
     public void onBindViewHolder(TodoHolder holder, int position) {
-        holder.draw(position);
+        holder.draw(todoList.get(position));
     }
 
     @Override
@@ -70,19 +70,18 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
         }
 
-        void draw(int position) {
-            final Todo todo = todoList.get(position);
+        void draw(final Todo todo) {
             cb.setChecked(todo.isChecked());
             cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    todoListener.onChecked(todo, isChecked);
+                    todoListener.onChecked(todo.getId(), isChecked);
                 }
             });
             cv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    todoListener.onClicked(todo);
+                    todoListener.onClicked(todo.getId());
                 }
             });
             tv.setText(todo.getBody());

@@ -21,5 +21,5 @@ MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> 
 
     void delete(Todo todo);
 
-    void checked(Todo todo, boolean isChecked);
+    void checked(int id, boolean isChecked);
 }

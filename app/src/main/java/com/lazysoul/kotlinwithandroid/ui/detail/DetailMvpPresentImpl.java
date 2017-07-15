@@ -10,6 +10,9 @@ import android.content.Intent;
 
 import java.util.Calendar;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 
 /**
@@ -25,17 +28,24 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private Todo beforeTodo;
 
-    @Override
-    public void attachView(MvpView view) {
-        this.view = (DetailMvpView) view;
+    private PublishSubject<Boolean> textChangeSubject = PublishSubject.create();
+
+    public DetailMvpPresentImpl() {
+        add(textChangeSubject
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean isChanged) throws Exception {
+                        beforeTodo.setFixed(isChanged);
+                        view.onChagedSaveBt();
+                    }
+                }));
     }
 
     @Override
-    public void stop(boolean isFinishing) {
-        if (isFinishing) {
-            dispose();
-            realm.close();
-        }
+    public void attachView(MvpView view) {
+        this.view = (DetailMvpView) view;
     }
 
     @Override
@@ -75,6 +85,8 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
             beforeTodo.setFixed(true);
             realm.commitTransaction();
         }
+
+        textChangeSubject.onNext(isChanged(s));
     }
 
     private boolean isChanged(String s) {
