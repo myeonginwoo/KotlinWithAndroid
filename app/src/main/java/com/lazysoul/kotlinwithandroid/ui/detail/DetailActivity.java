@@ -149,7 +149,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
                 break;
         }
 
-        resultData.putExtra(TodoManager.KEY_REQUEST_TYPE, result);
+        resultData.putExtra(TodoManager.KEY_RESULT_TYPE, result);
         resultData.putExtra(TodoManager.KEY_ID, todoId);
         setResult(RESULT_OK, resultData);
     }

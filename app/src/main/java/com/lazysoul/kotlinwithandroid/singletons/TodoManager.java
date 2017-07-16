@@ -17,19 +17,15 @@ public class TodoManager {
 
     public static final String KEY_REQUEST_TYPE = "request_type";
 
-    public static final String KEY_REQSULT_TYPE = "result_type";
+    public static final String KEY_RESULT_TYPE = "result_type";
 
     public static final int REQUEST_TYPE_CREATE = 100;
 
-    public static final int REQUEST_TYPE_VIEW = 1001;
+    public static final int REQUEST_TYPE_VIEW = 101;
 
     public static final int RESULT_TYPE_CREATED = 200;
 
     public static final int RESULT_TYPE_UPDATED = 201;
-
-    public static final int RESULT_TYPE_DELETED = 202;
-
-    public static final int RESULT_TYPE_NONE = 203;
 
     public static RealmResults<Todo> getTodoList(Realm realm) {
         return realm.where(Todo.class).findAllSorted("id");

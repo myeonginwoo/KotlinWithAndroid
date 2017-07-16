@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
-            int resultType = data.getIntExtra(TodoManager.KEY_REQUEST_TYPE, -1);
+            int resultType = data.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1);
             int todoId = data.getIntExtra(TodoManager.KEY_ID, -1);
             switch (resultType) {
                 case TodoManager.RESULT_TYPE_CREATED:
@@ -72,10 +72,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
                     break;
                 case TodoManager.RESULT_TYPE_UPDATED:
                     todoAdapter.update(todoId);
-                    break;
-                case TodoManager.RESULT_TYPE_DELETED:
-                    break;
-                case TodoManager.RESULT_TYPE_NONE:
                     break;
             }
 
