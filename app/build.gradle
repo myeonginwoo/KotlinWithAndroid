@@ -28,6 +28,8 @@ dependencies {
     compile rootProject.ext.design
     compile rootProject.ext.cardView
     compile rootProject.ext.rxAndroid
+    compile rootProject.ext.dagger
+    annotationProcessor rootProject.ext.daggerCompiler
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

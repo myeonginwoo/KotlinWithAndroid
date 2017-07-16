@@ -4,10 +4,14 @@ import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
+import com.lazysoul.kotlinwithandroid.injection.components.ActivityComponent;
+import com.lazysoul.kotlinwithandroid.injection.components.DaggerActivityComponent;
+import com.lazysoul.kotlinwithandroid.injection.module.ActivityModule;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 import com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +21,8 @@ import android.view.View;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends BaseActivity implements MainMvpView, TodoListener {
 
     private MainMvpPresenter<MainActivity> presenter;
@@ -25,9 +31,17 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     private View emptyView;
 
+    private ActivityComponent activityComponent;
+
     private final int REQUEST_CODE_DETAIL = 100;
 
     private final String KEY_IS_FIRST = "isFirst";
+
+    @Inject
+    SharedPreferences sharedPreferences;
+
+    @Inject
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
             }
         });
 
-        boolean isFirst = getPreferences(MODE_PRIVATE).getBoolean(KEY_IS_FIRST, false);
+        boolean isFirst = sharedPreferences.getBoolean(KEY_IS_FIRST, false);
         presenter.loadTotoList(isFirst);
     }
 
@@ -80,6 +94,17 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
+    public void inject() {
+        activityComponent = DaggerActivityComponent
+                .builder()
+                .applicationComponent(getApplicationComponet())
+                .activityModule(new ActivityModule(this))
+                .build();
+
+        activityComponent.inject(this);
+    }
+
+    @Override
     public void initPresenter(BaseMvpView view) {
         presenter = new MainMvpPresenterImpl<>();
         presenter.attachView(this);
@@ -103,7 +128,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void onSuccessCreateSampes() {
-        getPreferences(MODE_PRIVATE).edit().putBoolean(KEY_IS_FIRST, true).apply();
+        editor.putBoolean(KEY_IS_FIRST, true).apply();
     }
 
     @Override

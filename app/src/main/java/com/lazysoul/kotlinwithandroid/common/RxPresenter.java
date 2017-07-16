@@ -9,13 +9,13 @@ import io.reactivex.disposables.Disposable;
 
 public class RxPresenter {
 
-    CompositeDisposable disposables;
+    private CompositeDisposable disposables;
 
-    public RxPresenter() {
+    protected RxPresenter() {
         disposables = new CompositeDisposable();
     }
 
-    public void dispose() {
+    protected void dispose() {
         if (null != disposables && !disposables.isDisposed()) {
             disposables.dispose();
             disposables = null;

@@ -119,6 +119,11 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     }
 
     @Override
+    public void inject() {
+
+    }
+
+    @Override
     public void initPresenter(BaseMvpView view) {
         presenter = new DetailMvpPresentImpl();
         presenter.attachView(this);
