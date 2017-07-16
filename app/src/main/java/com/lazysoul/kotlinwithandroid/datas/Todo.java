@@ -2,15 +2,18 @@ package com.lazysoul.kotlinwithandroid.datas;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-public class Todo {
+public class Todo extends RealmObject {
 
+    @PrimaryKey
     private int id;
-
-    private String title;
 
     private String body;
 
@@ -18,20 +21,15 @@ public class Todo {
 
     private Date createdAt;
 
+    @Ignore
+    private boolean isFixed = false;
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getBody() {
@@ -56,5 +54,13 @@ public class Todo {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFixed() {
+        return isFixed;
+    }
+
+    public void setFixed(boolean fixed) {
+        isFixed = fixed;
     }
 }

@@ -6,9 +6,7 @@ package com.lazysoul.kotlinwithandroid.common;
 
 public interface BaseMvpPresenter<T extends BaseMvpView> {
 
-    public void attachView(T view);
-
-    void stop(boolean isFinishing);
+    void attachView(T view);
 
     void destroy();
 }
