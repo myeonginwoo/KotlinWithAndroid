@@ -30,7 +30,9 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private PublishSubject<Boolean> textChangeSubject = PublishSubject.create();
 
-    public DetailMvpPresentImpl() {
+    private int requestType = -1;
+
+    DetailMvpPresentImpl() {
         add(textChangeSubject
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,7 +58,7 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     @Override
     public void loadTodo(Intent intent) {
-        int requestType = intent
+        requestType = intent
                 .getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
 
         switch (requestType) {
@@ -89,23 +91,23 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
         textChangeSubject.onNext(isChanged(s));
     }
 
+    @Override
+    public void saveTodo(String text) {
+        realm.beginTransaction();
+        beforeTodo.setBody(text);
+        beforeTodo.setFixed(false);
+        if (beforeTodo.getId() == -1) {
+            beforeTodo.setId(TodoManager.getMaxId(realm) + 1);
+            beforeTodo = realm.copyToRealm(beforeTodo);
+        }
+        realm.commitTransaction();
+        view.onSaved(requestType, beforeTodo.getId());
+
+        textChangeSubject.onNext(false);
+    }
+
     private boolean isChanged(String s) {
         return !beforeTodo.getBody().equals(s);
-    }
-
-    @Override
-    public void update(Todo todo) {
-        // TODO: 2017. 7. 15.  ;
-    }
-
-    @Override
-    public void delete(Todo todo) {
-        view.onDeleted(todo);
-    }
-
-    @Override
-    public void create(Todo todo) {
-        view.onCreated(todo);
     }
 
     @Override

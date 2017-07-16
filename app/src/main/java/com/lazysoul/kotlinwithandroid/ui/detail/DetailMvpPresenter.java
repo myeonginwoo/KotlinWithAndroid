@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.detail;
 
 import com.lazysoul.kotlinwithandroid.common.BaseMvpPresenter;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
-import com.lazysoul.kotlinwithandroid.datas.Todo;
 
 import android.content.Intent;
 
@@ -14,13 +13,9 @@ interface DetailMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresent
 
     void loadTodo(Intent intent);
 
-    void update(Todo todo);
-
-    void delete(Todo todo);
-
-    void create(Todo todo);
-
     void onTextChanged(String s);
 
     boolean isFixed();
+
+    void saveTodo(String text);
 }

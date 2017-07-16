@@ -49,4 +49,8 @@ public class TodoManager {
         }
         realm.commitTransaction();
     }
+
+    public static int getMaxId(Realm realm) {
+        return realm.where(Todo.class).max("id").intValue();
+    }
 }

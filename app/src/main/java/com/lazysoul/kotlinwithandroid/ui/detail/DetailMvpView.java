@@ -11,9 +11,7 @@ public interface DetailMvpView extends BaseMvpView {
 
     void onUpdated(Todo todo, boolean editable);
 
-    void onDeleted(Todo todo);
-
-    void onCreated(Todo todo);
-
     void onChagedSaveBt();
+
+    void onSaved(int requestType, int todoId);
 }

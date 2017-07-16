@@ -6,6 +6,7 @@ import com.lazysoul.kotlinwithandroid.datas.Todo;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,29 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     void clear() {
         todoList.clear();
+    }
+
+    void insert(int todoId) {
+
+    }
+
+    void update(int todoId) {
+        int position = -1;
+        Log.e("foo", "todoId : " + todoId);
+        for (int i = 0; i < todoList.size(); i++) {
+            if (todoId == todoList.get(i).getId()) {
+                Log.e("foo", "body : " + todoList.get(i).getBody());
+                position = i;
+                break;
+            }
+        }
+        Log.e("foo", "position : " + position);
+        notifyItemChanged(position);
+    }
+
+    void addItem(Todo todo) {
+        todoList.add(todo);
+        notifyItemInserted(todoList.size() - 1);
     }
 
     class TodoHolder extends RecyclerView.ViewHolder {

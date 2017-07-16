@@ -13,10 +13,6 @@ interface MainMvpView extends BaseMvpView {
 
     void onUpdateTodoList(List<Todo> todoList);
 
-    void onUpdatedTodo(Todo todo);
-
-    void onRemovedTodo(Todo todo);
-
     void onCreatedTodo(Todo todo);
 
     void showEmtpyView();

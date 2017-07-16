@@ -88,18 +88,9 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     @Override
-    public void update(Todo todo) {
-
-    }
-
-    @Override
-    public void remove(Todo todo) {
-
-    }
-
-    @Override
-    public void delete(Todo todo) {
-
+    public void insert(int id) {
+        Todo todo = TodoManager.load(realm, id);
+        view.onCreatedTodo(todo);
     }
 
     @Override
