@@ -12,9 +12,11 @@ MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> 
 
     void loadTotoList(boolean isFirst);
 
-    void search(String keyword);
-
     void insert(int id);
 
     void checked(int id, boolean isChecked);
+
+    void searchQuery(String text);
+
+    void searchFinish();
 }

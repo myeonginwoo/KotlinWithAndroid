@@ -4,6 +4,7 @@ import com.lazysoul.kotlinwithandroid.datas.Todo;
 
 import java.util.Calendar;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -47,6 +48,14 @@ public class TodoManager {
     }
 
     public static int getMaxId(Realm realm) {
-        return realm.where(Todo.class).max("id").intValue();
+        return realm.where(Todo.class)
+                .max("id")
+                .intValue();
+    }
+
+    public static RealmResults<Todo> search(Realm realm, String text) {
+        return realm.where(Todo.class)
+                .contains("body", text, Case.INSENSITIVE)
+                .findAll();
     }
 }
