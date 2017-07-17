@@ -24,7 +24,7 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private DetailMvpView view;
 
-    private Realm realm = Realm.getDefaultInstance();
+    private Realm realm;
 
     private Todo beforeTodo;
 
@@ -32,7 +32,8 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private int requestType = -1;
 
-    DetailMvpPresentImpl() {
+    DetailMvpPresentImpl(Realm realm) {
+        this.realm = realm;
         add(textChangeSubject
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread())
