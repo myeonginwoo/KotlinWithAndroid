@@ -31,7 +31,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     @Inject
     Realm realm;
 
-    DetailMvpPresenter presenter;
+    DetailMvpPresenter<DetailMvpView> presenter;
 
     AppCompatEditText et;
 
@@ -132,7 +132,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
     @Override
     public void initPresenter(BaseMvpView view) {
-        presenter = new DetailMvpPresentImpl(realm);
+        presenter = new DetailMvpPresentImpl<>(realm);
         presenter.attachView(this);
     }
 
