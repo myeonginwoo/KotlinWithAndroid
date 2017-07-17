@@ -5,13 +5,14 @@ import com.lazysoul.kotlinwithandroid.common.RxPresenter;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
-import javax.inject.Inject;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -26,9 +27,26 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private Realm realm;
 
-    @Inject
-    MainMvpPresenterImpl(Realm realm) {
+    private PublishSubject<String> searchTextChangeSubject = PublishSubject.create();
+
+    MainMvpPresenterImpl(final Realm realm) {
         this.realm = realm;
+
+        add(searchTextChangeSubject
+                .throttleLast(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<String>() {
+                            @Override
+                            public void accept(String text) throws Exception {
+                                RealmResults<Todo> todoList = TodoManager.search(realm, text);
+                                if (todoList.isEmpty()) {
+                                    view.showEmtpyView();
+                                } else {
+                                    view.onUpdateTodoList(todoList);
+                                }
+                            }
+                        }));
     }
 
     @Override
@@ -86,11 +104,6 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     @Override
-    public void search(String keyword) {
-
-    }
-
-    @Override
     public void insert(int id) {
         Todo todo = TodoManager.load(realm, id);
         view.onCreatedTodo(todo);
@@ -101,5 +114,15 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
         realm.beginTransaction();
         TodoManager.load(realm, id).setChecked(isChecked);
         realm.commitTransaction();
+    }
+
+    @Override
+    public void searchQuery(String text) {
+        searchTextChangeSubject.onNext(text);
+    }
+
+    @Override
+    public void searchFinish() {
+        loadTodoList();
     }
 }

@@ -65,6 +65,11 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
         notifyItemInserted(todoList.size() - 1);
     }
 
+    void clear() {
+        todoList.clear();
+        notifyDataSetChanged();
+    }
+
     class TodoHolder extends RecyclerView.ViewHolder {
 
         private AppCompatCheckBox cb;

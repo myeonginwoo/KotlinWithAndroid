@@ -7,4 +7,5 @@
     <string name="cancel">취소</string>
     <string name="title_save">save</string>
     <string name="title_search">search</string>
+    <string name="hint_search">검색어를 입력하세요</string>
 </resources>
