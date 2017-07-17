@@ -17,7 +17,6 @@ public class KotlinWithAndroid extends Application {
 
     protected ApplicationComponent applicationComponent;
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,8 +25,6 @@ public class KotlinWithAndroid extends Application {
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
-
-        applicationComponent.injet(this);
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();

@@ -4,9 +4,6 @@ import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
-import com.lazysoul.kotlinwithandroid.injection.components.ActivityComponent;
-import com.lazysoul.kotlinwithandroid.injection.components.DaggerActivityComponent;
-import com.lazysoul.kotlinwithandroid.injection.module.ActivityModule;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 import com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity;
 
@@ -23,15 +20,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements MainMvpView, TodoListener {
+import io.realm.Realm;
 
-    private MainMvpPresenter<MainActivity> presenter;
+public class MainActivity extends BaseActivity implements MainMvpView, TodoListener {
 
     private TodoAdapter todoAdapter;
 
     private View emptyView;
-
-    private ActivityComponent activityComponent;
 
     private final int REQUEST_CODE_DETAIL = 100;
 
@@ -42,6 +37,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Inject
     SharedPreferences.Editor editor;
+
+    @Inject
+    Realm realm;
+
+    MainMvpPresenter<MainActivity> presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,18 +95,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void inject() {
-        activityComponent = DaggerActivityComponent
-                .builder()
-                .applicationComponent(getApplicationComponet())
-                .activityModule(new ActivityModule(this))
-                .build();
-
-        activityComponent.inject(this);
+        component.inject(this);
     }
 
     @Override
     public void initPresenter(BaseMvpView view) {
-        presenter = new MainMvpPresenterImpl<>();
+        presenter = new MainMvpPresenterImpl(realm);
         presenter.attachView(this);
     }
 

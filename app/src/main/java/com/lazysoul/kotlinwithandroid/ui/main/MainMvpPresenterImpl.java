@@ -5,6 +5,8 @@ import com.lazysoul.kotlinwithandroid.common.RxPresenter;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
@@ -24,8 +26,9 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private Realm realm;
 
-    MainMvpPresenterImpl() {
-        realm = Realm.getDefaultInstance();
+    @Inject
+    MainMvpPresenterImpl(Realm realm) {
+        this.realm = realm;
     }
 
     @Override

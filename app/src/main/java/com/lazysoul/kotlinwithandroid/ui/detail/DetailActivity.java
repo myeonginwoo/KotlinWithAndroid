@@ -18,11 +18,18 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
+import io.realm.Realm;
+
 /**
  * Created by Lazysoul on 2017. 7. 15..
  */
 
 public class DetailActivity extends BaseActivity implements DetailMvpView {
+
+    @Inject
+    Realm realm;
 
     DetailMvpPresenter presenter;
 
@@ -120,12 +127,12 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
     @Override
     public void inject() {
-
+        component.inject(this);
     }
 
     @Override
     public void initPresenter(BaseMvpView view) {
-        presenter = new DetailMvpPresentImpl();
+        presenter = new DetailMvpPresentImpl(realm);
         presenter.attachView(this);
     }
 
