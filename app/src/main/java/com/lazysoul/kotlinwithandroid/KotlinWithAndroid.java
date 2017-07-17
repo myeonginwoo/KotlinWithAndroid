@@ -26,6 +26,10 @@ public class KotlinWithAndroid extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
+        initRealm();
+    }
+
+    private void initRealm() {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
