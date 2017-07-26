@@ -131,7 +131,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     }
 
     @Override
-    public void initPresenter(BaseMvpView view) {
+    public void initPresenter() {
         presenter = new DetailMvpPresentImpl<>(realm);
         presenter.attachView(this);
     }

@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void initPresenter(BaseMvpView view) {
+    public void initPresenter() {
         presenter = new MainMvpPresenterImpl<>(realm);
         presenter.attachView(this);
     }
