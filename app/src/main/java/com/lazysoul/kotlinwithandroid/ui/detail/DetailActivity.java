@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.detail;
 
 import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
-import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
@@ -131,7 +130,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     }
 
     @Override
-    public void initPresenter(BaseMvpView view) {
+    public void initPresenter() {
         presenter = new DetailMvpPresentImpl<>(realm);
         presenter.attachView(this);
     }

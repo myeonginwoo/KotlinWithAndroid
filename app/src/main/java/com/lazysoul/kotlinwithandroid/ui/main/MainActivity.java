@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
-import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 import com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity;
@@ -113,7 +112,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void initPresenter(BaseMvpView view) {
+    public void initPresenter() {
         presenter = new MainMvpPresenterImpl<>(realm);
         presenter.attachView(this);
     }
