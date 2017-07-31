@@ -7,5 +7,6 @@ package com.lazysoul.kotlinwithandroid.common;
 public interface BaseMvpView {
 
     void inject();
+
     void initPresenter();
 }
