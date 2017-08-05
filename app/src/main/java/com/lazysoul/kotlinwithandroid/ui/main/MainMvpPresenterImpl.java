@@ -39,7 +39,8 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
                         new Consumer<String>() {
                             @Override
                             public void accept(String text) throws Exception {
-                                RealmResults<Todo> todoList = TodoManager.search(realm, text);
+                                RealmResults<Todo> todoList = TodoManager.INSTANCE
+                                        .search(realm, text);
                                 if (todoList.isEmpty()) {
                                     view.showEmtpyView();
                                 } else {
@@ -91,7 +92,7 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     private void loadTodoList() {
-        RealmResults<Todo> todoList = TodoManager.getTodoList(realm);
+        RealmResults<Todo> todoList = TodoManager.INSTANCE.getTodoList(realm);
         if (null != todoList && todoList.isEmpty()) {
             view.showEmtpyView();
         } else {
@@ -100,19 +101,19 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     private void createdSample() {
-        TodoManager.createSamleTodo(realm);
+        TodoManager.INSTANCE.createSamleTodo(realm);
     }
 
     @Override
     public void insert(int id) {
-        Todo todo = TodoManager.load(realm, id);
+        Todo todo = TodoManager.INSTANCE.load(realm, id);
         view.onCreatedTodo(todo);
     }
 
     @Override
     public void checked(int id, boolean isChecked) {
         realm.beginTransaction();
-        TodoManager.load(realm, id).setChecked(isChecked);
+        TodoManager.INSTANCE.load(realm, id).setChecked(isChecked);
         realm.commitTransaction();
     }
 
