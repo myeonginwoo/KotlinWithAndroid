@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void inject() {
-        component.inject(this);
+        getComponent().inject(this);
     }
 
     @Override

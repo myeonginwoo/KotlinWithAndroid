@@ -126,7 +126,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
     @Override
     public void inject() {
-        component.inject(this);
+        getComponent().inject(this);
     }
 
     @Override
