@@ -60,15 +60,16 @@ class MainActivity : BaseActivity(), MainMvpView, TodoListener {
         presenter.destroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
-            val resultType = data.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1)
-            val todoId = data.getIntExtra(TodoManager.KEY_ID, -1)
-            when (resultType) {
-                TodoManager.RESULT_TYPE_CREATED -> presenter.insert(todoId)
-                TodoManager.RESULT_TYPE_UPDATED -> todoAdapter.update(todoId)
+            data?.let {
+                val resultType = it.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1)
+                val todoId = it.getIntExtra(TodoManager.KEY_ID, -1)
+                when (resultType) {
+                    TodoManager.RESULT_TYPE_CREATED -> presenter.insert(todoId)
+                    TodoManager.RESULT_TYPE_UPDATED -> todoAdapter.update(todoId)
+                }
             }
-
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
