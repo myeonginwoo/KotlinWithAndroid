@@ -30,22 +30,23 @@ object TodoManager {
         return realm.where(Todo::class.java).findAllSorted("id")
     }
 
-    @JvmStatic fun load(realm: Realm, id: Int): Todo {
+    fun load(realm: Realm, id: Int): Todo {
         return realm.where(Todo::class.java).equalTo("id", id).findFirst()
     }
 
     fun createSamleTodo(realm: Realm) {
         realm.beginTransaction()
         for (i in 0..9) {
-            val todo = realm.createObject(Todo::class.java, i)
-            todo.isChecked = false
-            todo.body = "Todo " + i
-            todo.createdAt = Calendar.getInstance().time
+            realm.createObject(Todo::class.java, i).apply {
+                isChecked = false
+                body = "Todo " + i
+                createdAt = Calendar.getInstance().time
+            }
         }
         realm.commitTransaction()
     }
 
-    @JvmStatic fun getMaxId(realm: Realm): Int {
+    fun getMaxId(realm: Realm): Int {
         return realm.where(Todo::class.java)
                 .max("id")
                 .toInt()

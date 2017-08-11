@@ -28,8 +28,7 @@ open class KotlinWithAndroid : Application() {
 
     private fun initRealm() {
         Realm.init(this)
-        val config = RealmConfiguration.Builder().build()
-        Realm.setDefaultConfiguration(config)
+        Realm.setDefaultConfiguration(RealmConfiguration.Builder().build())
     }
 
 }

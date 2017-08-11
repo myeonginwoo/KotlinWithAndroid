@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Lazysoul on 2017. 7. 9..
  */
-class MainMvpPresenterImpl(
-        private val realm: Realm) : RxPresenter(), MainMvpPresenter<MainMvpView> {
+class MainMvpPresenterImpl(private val realm: Realm)
+    : RxPresenter(), MainMvpPresenter<MainMvpView> {
 
     private lateinit var view: MainMvpView
 
@@ -23,13 +23,14 @@ class MainMvpPresenterImpl(
                 .throttleLast(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { text ->
-                    val todoList = TodoManager
-                            .search(realm, text)
-                    if (todoList.isEmpty()) {
-                        view.showEmtpyView()
-                    } else {
-                        view.onUpdateTodoList(todoList)
+                    TodoManager.search(realm, text).run {
+                        if (isEmpty()) {
+                            view.showEmtpyView()
+                        } else {
+                            view.onUpdateTodoList(this)
+                        }
                     }
+
                 })
     }
 
@@ -52,11 +53,12 @@ class MainMvpPresenterImpl(
     }
 
     private fun loadTodoList() {
-        val todoList = TodoManager.getTodoList(realm)
-        if (todoList.isEmpty()) {
-            view.showEmtpyView()
-        } else {
-            view.onUpdateTodoList(todoList)
+        TodoManager.getTodoList(realm).run {
+            if (isEmpty()) {
+                view.showEmtpyView()
+            } else {
+                view.onUpdateTodoList(this)
+            }
         }
     }
 

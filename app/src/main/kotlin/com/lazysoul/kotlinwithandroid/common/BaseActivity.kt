@@ -31,4 +31,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseMvpView {
 
     val applicationComponet: ApplicationComponent
         get() = (application as KotlinWithAndroid).component
+
+    abstract fun inject()
+
+    abstract fun initPresenter()
 }
