@@ -26,13 +26,11 @@ object TodoManager {
 
     const val RESULT_TYPE_UPDATED = 201
 
-    fun getTodoList(realm: Realm): RealmResults<Todo> {
-        return realm.where(Todo::class.java).findAllSorted("id")
-    }
+    fun getTodoList(realm: Realm): RealmResults<Todo> =
+            realm.where(Todo::class.java).findAllSorted("id")
 
-    fun load(realm: Realm, id: Int): Todo {
-        return realm.where(Todo::class.java).equalTo("id", id).findFirst()
-    }
+    fun load(realm: Realm, id: Int): Todo =
+            realm.where(Todo::class.java).equalTo("id", id).findFirst()
 
     fun createSamleTodo(realm: Realm) {
         realm.beginTransaction()
@@ -48,8 +46,7 @@ object TodoManager {
 
     fun getMaxId(realm: Realm): Int {
         return realm.where(Todo::class.java)
-                .max("id")
-                .toInt()
+                ?.max("id")?.toInt() ?: -1
     }
 
     fun search(realm: Realm, text: String): RealmResults<Todo> {

@@ -12,22 +12,19 @@ import java.util.ArrayList
  * Created by Lazysoul on 2017. 7. 12..
  */
 
-internal class TodoAdapter(private val todoListener: TodoListener)
+class TodoAdapter(val todoListener: TodoListener)
     : RecyclerView.Adapter<TodoAdapter.TodoHolder>() {
 
     private val todoList = ArrayList<Todo>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoHolder {
-        return TodoHolder(parent)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoHolder =
+            TodoHolder(parent)
 
     override fun onBindViewHolder(holder: TodoHolder, position: Int) {
         holder.draw(todoList[position])
     }
 
-    override fun getItemCount(): Int {
-        return todoList.size
-    }
+    override fun getItemCount(): Int = todoList.size
 
     fun addItems(list: List<Todo>) {
         todoList.addAll(list)
@@ -55,7 +52,7 @@ internal class TodoAdapter(private val todoListener: TodoListener)
         fun draw(todo: Todo) {
             with(itemView) {
                 cb_item.isChecked = todo.isChecked
-                cb_item.setOnCheckedChangeListener { buttonView, isChecked ->
+                cb_item.setOnCheckedChangeListener { _, isChecked ->
                     todoListener.onChecked(todo.id, isChecked)
                 }
                 cv_item_todo.setOnClickListener { todoListener.onClicked(todo.id) }

@@ -4,7 +4,7 @@ package com.lazysoul.kotlinwithandroid.ui.main
  * Created by Lazysoul on 2017. 7. 15..
  */
 
-internal interface TodoListener {
+interface TodoListener {
 
     fun onChecked(id: Int, isChecked: Boolean)
 

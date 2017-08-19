@@ -13,8 +13,8 @@ import java.util.Calendar
  * Created by Lazysoul on 2017. 7. 15..
  */
 
-internal class DetailMvpPresentImpl(
-        private val realm: Realm) : RxPresenter(), DetailMvpPresenter<DetailMvpView> {
+class DetailMvpPresentImpl(private val realm: Realm)
+    : RxPresenter(), DetailMvpPresenter<DetailMvpView> {
 
     private lateinit var view: DetailMvpView
 
@@ -93,9 +93,7 @@ internal class DetailMvpPresentImpl(
         textChangeSubject.onNext(false)
     }
 
-    private fun isChanged(s: String): Boolean {
-        return beforeTodo.body != s
-    }
+    private fun isChanged(s: String): Boolean = beforeTodo.body != s
 
     override val isFixed: Boolean
         get() = beforeTodo.isFixed

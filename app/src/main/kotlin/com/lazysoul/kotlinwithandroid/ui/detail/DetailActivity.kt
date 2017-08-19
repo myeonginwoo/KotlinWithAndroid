@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +10,7 @@ import android.view.MenuItem
 import com.lazysoul.kotlinwithandroid.R
 import com.lazysoul.kotlinwithandroid.common.BaseActivity
 import com.lazysoul.kotlinwithandroid.datas.Todo
+import com.lazysoul.kotlinwithandroid.extensions.dialog
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -83,16 +83,15 @@ class DetailActivity : BaseActivity(), DetailMvpView {
     }
 
     private fun showSaveDialog() {
-        AlertDialog.Builder(this)
-                .apply {
-                    setMessage(R.string.msg_not_save)
-                    setPositiveButton(R.string.confirm) { dialog, _ ->
-                        dialog.dismiss()
-                        super@DetailActivity.onBackPressed()
-                    }
-                    setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-                    show()
-                }
+        dialog(R.string.msg_not_save,
+                R.string.confirm,
+                { dialog, _ ->
+                    dialog.dismiss()
+                    this@DetailActivity.onBackPressed()
+                },
+                R.string.cancel,
+                { dialog, _ -> dialog.dismiss() }
+        )
     }
 
     override fun inject() {
@@ -106,9 +105,11 @@ class DetailActivity : BaseActivity(), DetailMvpView {
     }
 
     override fun onUpdated(todo: Todo, editable: Boolean) {
-        et_activity_detail.setText(todo.body)
-        if (editable) {
-            et_activity_detail.requestFocus()
+        with(et_activity_detail) {
+            setText(todo.body)
+            if (editable) {
+                requestFocus()
+            }
         }
     }
 

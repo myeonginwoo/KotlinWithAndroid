@@ -146,9 +146,7 @@ class MainActivity : BaseActivity(), MainMvpView, TodoListener {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(true)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    return true
-                }
+                override fun onQueryTextSubmit(query: String) = true
 
                 override fun onQueryTextChange(newText: String): Boolean {
                     presenter.searchQuery(newText)
@@ -159,9 +157,7 @@ class MainActivity : BaseActivity(), MainMvpView, TodoListener {
 
         MenuItemCompat.setOnActionExpandListener(searchMenuItem,
                 object : MenuItemCompat.OnActionExpandListener {
-                    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                        return true
-                    }
+                    override fun onMenuItemActionExpand(item: MenuItem): Boolean = true
 
                     override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                         presenter.searchFinish()

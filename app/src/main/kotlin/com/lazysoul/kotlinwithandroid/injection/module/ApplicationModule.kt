@@ -16,18 +16,13 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     @Singleton
-    internal fun provideApplication(): Application {
-        return application
-    }
+    fun provideApplication(): Application = application
 
     @Provides
-    internal fun provideSharedPrefs(): SharedPreferences {
-        return application.getSharedPreferences("kotlinWithAndroid", Context.MODE_PRIVATE)
-    }
+    fun provideSharedPrefs(): SharedPreferences =
+            application.getSharedPreferences("kotlinWithAndroid", Context.MODE_PRIVATE)
 
     @Provides
-    internal fun provideEditor(pref: SharedPreferences): SharedPreferences.Editor {
-        return pref.edit()
-    }
+    fun provideEditor(pref: SharedPreferences): SharedPreferences.Editor = pref.edit()
 
 }
