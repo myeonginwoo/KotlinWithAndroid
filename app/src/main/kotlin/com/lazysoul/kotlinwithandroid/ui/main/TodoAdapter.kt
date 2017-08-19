@@ -32,7 +32,7 @@ class TodoAdapter(val todoListener: TodoListener)
     }
 
     fun update(todoId: Int) {
-        val position = todoList.indices.firstOrNull { todoId == todoList[it].id } ?: -1
+        val position = todoList.indexOfFirst { todoId == it.id }
         notifyItemChanged(position)
     }
 

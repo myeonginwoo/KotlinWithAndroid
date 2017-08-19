@@ -9,6 +9,10 @@ import android.widget.Toast
  * Created by Lazysoul on 2017. 8. 12..
  */
 
+fun test(context: Context){
+    context.toast("test")
+}
+
 fun Context.toast(msg: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, length).show()
 }
