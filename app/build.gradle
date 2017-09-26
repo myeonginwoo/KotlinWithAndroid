@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
@@ -18,18 +21,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    compile rootProject.ext.kotlin
     compile rootProject.ext.appcompatV7
     compile rootProject.ext.recycelrView
     compile rootProject.ext.design
     compile rootProject.ext.cardView
     compile rootProject.ext.rxAndroid
+
+    kapt rootProject.ext.daggerCompiler
     compile rootProject.ext.dagger
-    annotationProcessor rootProject.ext.daggerCompiler
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
