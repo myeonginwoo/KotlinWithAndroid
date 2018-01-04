@@ -6,9 +6,6 @@ import com.lazysoul.kotlinwithandroid.injection.module.ApplicationModule;
 
 import android.app.Application;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
 /**
  * Created by Lazysoul on 2017. 7. 15..
  */
@@ -22,17 +19,9 @@ public class KotlinWithAndroid extends Application {
         super.onCreate();
 
         applicationComponent = DaggerApplicationComponent
-                .builder()
-                .applicationModule(new ApplicationModule(this))
-                .build();
-
-        initRealm();
-    }
-
-    private void initRealm() {
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
+            .builder()
+            .applicationModule(new ApplicationModule(this))
+            .build();
     }
 
     public ApplicationComponent getComponent() {

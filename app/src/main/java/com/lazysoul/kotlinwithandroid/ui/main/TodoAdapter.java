@@ -80,7 +80,7 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
         TodoHolder(ViewGroup parent) {
             super(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_todo, parent, false));
+                .inflate(R.layout.item_todo, parent, false));
             cv = (CardView) itemView.findViewById(R.id.cv_item_todo);
             cb = (AppCompatCheckBox) itemView.findViewById(R.id.cb_item);
             tv = (TextView) itemView.findViewById(R.id.tv_item_todo_body);

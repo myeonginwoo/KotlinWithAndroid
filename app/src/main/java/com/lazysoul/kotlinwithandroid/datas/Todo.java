@@ -2,17 +2,12 @@ package com.lazysoul.kotlinwithandroid.datas;
 
 import java.util.Date;
 
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-public class Todo extends RealmObject {
+public class Todo {
 
-    @PrimaryKey
     private int id;
 
     private String body;
@@ -21,7 +16,6 @@ public class Todo extends RealmObject {
 
     private Date createdAt;
 
-    @Ignore
     private boolean isFixed = false;
 
     public int getId() {

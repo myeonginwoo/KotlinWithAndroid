@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.main;
 
 import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
-import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 import com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -26,8 +24,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.realm.Realm;
-
 public class MainActivity extends BaseActivity implements MainMvpView, TodoListener {
 
     private TodoAdapter todoAdapter;
@@ -36,18 +32,15 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     private final int REQUEST_CODE_DETAIL = 100;
 
-    private final String KEY_IS_FIRST = "isFirst";
-
     @Inject
     SharedPreferences sharedPreferences;
 
     @Inject
     SharedPreferences.Editor editor;
 
-    @Inject
-    Realm realm;
+    MainMvpPresenter<MainMvpView> presenter;
 
-    MainMvpPresenter<MainActivity> presenter;
+    private final String KEY_IS_FIRST = "isFirst";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +49,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
         setSupportActionBar((Toolbar) findViewById(R.id.tb_activity_main));
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_activity_main);
+        RecyclerView recyclerView = findViewById(R.id.rv_activity_main);
         emptyView = findViewById(R.id.tv_activity_main_empty);
-        FloatingActionButton addBt = (FloatingActionButton) findViewById(R.id.fa_activity_main);
+        FloatingActionButton addBt = findViewById(R.id.fa_activity_main);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         todoAdapter = new TodoAdapter(this);
@@ -71,8 +64,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
             }
         });
 
-        boolean isFirst = sharedPreferences.getBoolean(KEY_IS_FIRST, false);
-        presenter.loadTotoList(isFirst);
+        if (sharedPreferences.getBoolean(KEY_IS_FIRST, true)) {
+            presenter.createTodoSamples();
+            editor.putBoolean(KEY_IS_FIRST, false).apply();
+        }
+
     }
 
     @Override
@@ -114,7 +110,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void initPresenter() {
-        presenter = new MainMvpPresenterImpl<>(realm);
+        presenter = new MainMvpPresenterImpl<>();
         presenter.attachView(this);
     }
 
@@ -137,8 +133,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void onSuccessCreateSampes() {
-        editor.putBoolean(KEY_IS_FIRST, true).apply();
+    public void onCreatedSampes(List<Todo> todoList) {
+        todoAdapter.addItems(todoList);
     }
 
     @Override
@@ -185,18 +181,17 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
             }
         });
 
-        MenuItemCompat.setOnActionExpandListener(searchMenuItem,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-                        return true;
-                    }
+        searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
 
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-                        presenter.searchFinish();
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                presenter.searchFinish();
+                return true;
+            }
+        });
     }
 }

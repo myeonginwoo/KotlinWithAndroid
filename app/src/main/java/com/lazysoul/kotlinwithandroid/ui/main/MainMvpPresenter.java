@@ -7,10 +7,9 @@ import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-interface
-MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> {
+interface MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter<MvpView> {
 
-    void loadTotoList(boolean isFirst);
+    void createTodoSamples();
 
     void insert(int id);
 

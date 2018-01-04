@@ -2,7 +2,6 @@ package com.lazysoul.kotlinwithandroid.ui.detail;
 
 import com.lazysoul.kotlinwithandroid.R;
 import com.lazysoul.kotlinwithandroid.common.BaseActivity;
-import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
@@ -18,18 +17,11 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import javax.inject.Inject;
-
-import io.realm.Realm;
-
 /**
  * Created by Lazysoul on 2017. 7. 15..
  */
 
 public class DetailActivity extends BaseActivity implements DetailMvpView {
-
-    @Inject
-    Realm realm;
 
     DetailMvpPresenter<DetailMvpView> presenter;
 
@@ -44,7 +36,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
         setSupportActionBar((Toolbar) findViewById(R.id.tb_activity_detail));
 
-        et = (AppCompatEditText) findViewById(R.id.et_activity_detail);
+        et = findViewById(R.id.et_activity_detail);
 
         et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -109,20 +101,20 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     private void showSaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.msg_not_save)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        DetailActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    DetailActivity.super.onBackPressed();
+                }
+            })
+            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            })
+            .show();
     }
 
     @Override
@@ -132,7 +124,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
     @Override
     public void initPresenter() {
-        presenter = new DetailMvpPresentImpl<>(realm);
+        presenter = new DetailMvpPresentImpl<>();
         presenter.attachView(this);
     }
 

@@ -2,11 +2,9 @@ package com.lazysoul.kotlinwithandroid.singletons;
 
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-
-import io.realm.Case;
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.List;
 
 /**
  * Created by Lazysoul on 2017. 7. 12..
@@ -28,34 +26,58 @@ public class TodoManager {
 
     public static final int RESULT_TYPE_UPDATED = 201;
 
-    public static RealmResults<Todo> getTodoList(Realm realm) {
-        return realm.where(Todo.class).findAllSorted("id");
+    private static ArrayList<Todo> todoList = new ArrayList<>();
+
+    public static List<Todo> getTodoList() {
+        return todoList;
     }
 
-    public static Todo load(Realm realm, int id) {
-        return realm.where(Todo.class).equalTo("id", id).findFirst();
-    }
-
-    public static void createSamleTodo(Realm realm) {
-        realm.beginTransaction();
+    public static ArrayList<Todo> createSamples() {
+        todoList.clear();
         for (int i = 0; i < 10; i++) {
-            Todo todo = realm.createObject(Todo.class, i);
+            Todo todo = new Todo();
+            todo.setId(i);
             todo.setChecked(false);
             todo.setBody("Todo " + i);
             todo.setCreatedAt(Calendar.getInstance().getTime());
+            todoList.add(todo);
         }
-        realm.commitTransaction();
+        return todoList;
     }
 
-    public static int getMaxId(Realm realm) {
-        return realm.where(Todo.class)
-                .max("id")
-                .intValue();
+    public static int getMaxId() {
+        int max = 0;
+        for (Todo todo : todoList) {
+            if (todo.getId() > max) {
+                max = todo.getId();
+            }
+        }
+        return max;
     }
 
-    public static RealmResults<Todo> search(Realm realm, String text) {
-        return realm.where(Todo.class)
-                .contains("body", text, Case.INSENSITIVE)
-                .findAll();
+    public static Todo getTodo(int id) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                return todo;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Todo> search(String text) {
+        ArrayList<Todo> result = new ArrayList<>();
+        for (Todo todo : todoList) {
+            if (todo.getBody().contains(text)) {
+                result.add(todo);
+            }
+        }
+        return result;
+    }
+
+    public static Todo insert(int id) {
+        Todo todo = new Todo();
+        todo.setId(id);
+        todoList.add(todo);
+        return todo;
     }
 }
