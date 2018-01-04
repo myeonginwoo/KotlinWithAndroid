@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.lazysoul.kotlinwithandroid"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -23,12 +22,12 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile rootProject.ext.appcompatV7
-    compile rootProject.ext.recycelrView
-    compile rootProject.ext.design
-    compile rootProject.ext.cardView
-    compile rootProject.ext.rxAndroid
-    compile rootProject.ext.dagger
+    implementation rootProject.ext.appcompatV7
+    implementation rootProject.ext.recycelrView
+    implementation rootProject.ext.design
+    implementation rootProject.ext.cardView
+    implementation rootProject.ext.rxAndroid
+    implementation rootProject.ext.dagger
     annotationProcessor rootProject.ext.daggerCompiler
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
