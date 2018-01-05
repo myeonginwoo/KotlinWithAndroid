@@ -1,7 +1,5 @@
 package com.lazysoul.kotlinwithandroid.datas;
 
-import java.util.Date;
-
 /**
  * Created by Lazysoul on 2017. 7. 9..
  */
@@ -13,8 +11,6 @@ public class Todo {
     private String body;
 
     private boolean isChecked;
-
-    private Date createdAt;
 
     private boolean isFixed = false;
 
@@ -40,14 +36,6 @@ public class Todo {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public boolean isFixed() {

@@ -8,8 +8,6 @@ import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
 import android.content.Intent;
 
-import java.util.Calendar;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
@@ -61,8 +59,6 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
             case TodoManager.REQUEST_TYPE_CREATE:
                 beforeTodo = new Todo();
                 beforeTodo.setId(-1);
-                beforeTodo.setChecked(false);
-                beforeTodo.setCreatedAt(Calendar.getInstance().getTime());
                 beforeTodo.setBody("");
                 view.onUpdated(beforeTodo, true);
                 break;
@@ -92,7 +88,7 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
         if (beforeTodo.getId() == -1) {
             beforeTodo.setId(TodoManager.getMaxId() + 1);
         }
-        view.onSaved(requestType, beforeTodo.getId());
+        view.onSaved(requestType, beforeTodo);
 
         textChangeSubject.onNext(false);
     }

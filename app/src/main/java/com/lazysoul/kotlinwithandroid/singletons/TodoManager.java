@@ -3,7 +3,6 @@ package com.lazysoul.kotlinwithandroid.singletons;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -13,6 +12,8 @@ import java.util.List;
 public class TodoManager {
 
     public static final String KEY_ID = "id";
+
+    public static final String KEY_BODY = "body";
 
     public static final String KEY_REQUEST_TYPE = "request_type";
 
@@ -33,13 +34,11 @@ public class TodoManager {
     }
 
     public static ArrayList<Todo> createSamples() {
-        todoList.clear();
         for (int i = 0; i < 10; i++) {
             Todo todo = new Todo();
             todo.setId(i);
             todo.setChecked(false);
             todo.setBody("Todo " + i);
-            todo.setCreatedAt(Calendar.getInstance().getTime());
             todoList.add(todo);
         }
         return todoList;
@@ -74,10 +73,22 @@ public class TodoManager {
         return result;
     }
 
-    public static Todo insert(int id) {
+    public static Todo insert(int id, String body) {
         Todo todo = new Todo();
         todo.setId(id);
+        todo.setBody(body);
+        todo.setChecked(false);
         todoList.add(todo);
         return todo;
+    }
+
+    public static Todo update(int id, String body) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                todo.setBody(body);
+                return todo;
+            }
+        }
+        return null;
     }
 }

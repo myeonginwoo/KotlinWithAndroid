@@ -57,7 +57,8 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
         view.onCreatedSampes(TodoManager.createSamples());
     }
 
-    private void loadTodoList() {
+    @Override
+    public void loadTodoList() {
         List<Todo> todoList = TodoManager.getTodoList();
         if (null != todoList && todoList.isEmpty()) {
             view.showEmtpyView();
@@ -67,8 +68,14 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
     }
 
     @Override
-    public void insert(int id) {
-        view.onCreatedTodo(TodoManager.insert(id));
+    public void insert(int id, String body) {
+        view.onCreatedTodo(TodoManager.insert(id, body));
+    }
+
+    @Override
+    public void update(int id, String body) {
+        TodoManager.update(id, body);
+        view.onUpdateTodo(TodoManager.getTodo(id));
     }
 
     @Override

@@ -11,7 +11,11 @@ interface MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter
 
     void createTodoSamples();
 
-    void insert(int id);
+    void loadTodoList();
+
+    void insert(int id, String body);
+
+    void update(int id, String body);
 
     void checked(int id, boolean isChecked);
 

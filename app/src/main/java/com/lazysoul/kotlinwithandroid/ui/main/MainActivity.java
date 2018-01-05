@@ -26,6 +26,8 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements MainMvpView, TodoListener {
 
+    private static final String KEY_IS_FIRST = "isFirst";
+
     private TodoAdapter todoAdapter;
 
     private View emptyView;
@@ -39,8 +41,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     SharedPreferences.Editor editor;
 
     MainMvpPresenter<MainMvpView> presenter;
-
-    private final String KEY_IS_FIRST = "isFirst";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
         if (sharedPreferences.getBoolean(KEY_IS_FIRST, true)) {
             presenter.createTodoSamples();
             editor.putBoolean(KEY_IS_FIRST, false).apply();
+        } else {
+            presenter.loadTodoList();
         }
 
     }
@@ -81,13 +83,14 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
             int resultType = data.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1);
-            int todoId = data.getIntExtra(TodoManager.KEY_ID, -1);
+            int id = data.getIntExtra(TodoManager.KEY_ID, -1);
+            String body = data.getStringExtra(TodoManager.KEY_BODY);
             switch (resultType) {
                 case TodoManager.RESULT_TYPE_CREATED:
-                    presenter.insert(todoId);
+                    presenter.insert(id, body);
                     break;
                 case TodoManager.RESULT_TYPE_UPDATED:
-                    todoAdapter.update(todoId);
+                    presenter.update(id, body);
                     break;
             }
 
@@ -119,6 +122,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
         todoAdapter.clear();
         todoAdapter.addItems(todoList);
         emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onUpdateTodo(Todo todo) {
+        todoAdapter.update(todo);
     }
 
     @Override

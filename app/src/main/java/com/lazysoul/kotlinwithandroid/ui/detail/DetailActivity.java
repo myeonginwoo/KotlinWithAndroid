@@ -142,7 +142,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
     }
 
     @Override
-    public void onSaved(int requestType, int todoId) {
+    public void onSaved(int requestType, Todo todo) {
         int result = -1;
         switch (requestType) {
             case TodoManager.REQUEST_TYPE_CREATE:
@@ -154,7 +154,8 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
         }
 
         resultData.putExtra(TodoManager.KEY_RESULT_TYPE, result);
-        resultData.putExtra(TodoManager.KEY_ID, todoId);
+        resultData.putExtra(TodoManager.KEY_ID, todo.getId());
+        resultData.putExtra(TodoManager.KEY_BODY, todo.getBody());
         setResult(RESULT_OK, resultData);
     }
 }

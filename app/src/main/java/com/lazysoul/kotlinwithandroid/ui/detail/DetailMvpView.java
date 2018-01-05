@@ -13,5 +13,5 @@ public interface DetailMvpView extends BaseMvpView {
 
     void onChagedSaveBt();
 
-    void onSaved(int requestType, int todoId);
+    void onSaved(int requestType, Todo todo);
 }

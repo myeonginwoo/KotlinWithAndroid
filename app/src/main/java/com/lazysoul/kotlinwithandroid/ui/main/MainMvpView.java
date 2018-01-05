@@ -14,6 +14,8 @@ interface MainMvpView extends BaseMvpView {
 
     void onUpdateTodoList(List<Todo> todoList);
 
+    void onUpdateTodo(Todo todo);
+
     void onCreatedTodo(Todo todo);
 
     void showEmtpyView();

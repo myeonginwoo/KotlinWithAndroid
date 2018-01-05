@@ -49,10 +49,11 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
         notifyDataSetChanged();
     }
 
-    void update(int todoId) {
+    void update(Todo todo) {
         int position = -1;
         for (int i = 0; i < todoList.size(); i++) {
-            if (todoId == todoList.get(i).getId()) {
+            if (todo.getId() == todoList.get(i).getId()) {
+                todoList.get(i).setBody(todo.getBody());
                 position = i;
                 break;
             }
@@ -81,9 +82,9 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
         TodoHolder(ViewGroup parent) {
             super(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_todo, parent, false));
-            cv = (CardView) itemView.findViewById(R.id.cv_item_todo);
-            cb = (AppCompatCheckBox) itemView.findViewById(R.id.cb_item);
-            tv = (TextView) itemView.findViewById(R.id.tv_item_todo_body);
+            cv = itemView.findViewById(R.id.cv_item_todo);
+            cb = itemView.findViewById(R.id.cb_item);
+            tv = itemView.findViewById(R.id.tv_item_todo_body);
 
         }
 
