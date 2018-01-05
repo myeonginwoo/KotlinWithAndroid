@@ -17,9 +17,9 @@ interface MainMvpPresenter<MvpView extends BaseMvpView> extends BaseMvpPresenter
 
     void update(int id, String body);
 
-    void checked(int id, boolean isChecked);
-
     void searchQuery(String text);
 
     void searchFinish();
+
+    void checked(int id, boolean isChecked);
 }

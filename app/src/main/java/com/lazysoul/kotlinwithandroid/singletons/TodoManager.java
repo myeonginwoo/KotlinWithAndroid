@@ -2,6 +2,9 @@ package com.lazysoul.kotlinwithandroid.singletons;
 
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,7 @@ public class TodoManager {
         return max;
     }
 
+    @Nullable
     public static Todo getTodo(int id) {
         for (Todo todo : todoList) {
             if (todo.getId() == id) {
@@ -63,16 +67,23 @@ public class TodoManager {
         return null;
     }
 
+    @NonNull
     public static ArrayList<Todo> search(String text) {
         ArrayList<Todo> result = new ArrayList<>();
-        for (Todo todo : todoList) {
-            if (todo.getBody().contains(text)) {
-                result.add(todo);
+        if (text.isEmpty()) {
+            result.addAll(todoList);
+        } else {
+
+            for (Todo todo : todoList) {
+                if (todo.getBody().contains(text)) {
+                    result.add(todo);
+                }
             }
         }
         return result;
     }
 
+    @NonNull
     public static Todo insert(int id, String body) {
         Todo todo = new Todo();
         todo.setId(id);
@@ -82,6 +93,7 @@ public class TodoManager {
         return todo;
     }
 
+    @Nullable
     public static Todo update(int id, String body) {
         for (Todo todo : todoList) {
             if (todo.getId() == id) {
@@ -90,5 +102,14 @@ public class TodoManager {
             }
         }
         return null;
+    }
+
+    public static void checked(int id, boolean isChecked) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                todo.setChecked(isChecked);
+                break;
+            }
+        }
     }
 }

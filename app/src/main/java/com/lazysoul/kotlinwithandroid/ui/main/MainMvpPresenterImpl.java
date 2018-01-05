@@ -5,6 +5,8 @@ import com.lazysoul.kotlinwithandroid.common.RxPresenter;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +19,7 @@ import io.reactivex.subjects.PublishSubject;
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
-    implements MainMvpPresenter<MvpView> {
+class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter implements MainMvpPresenter<MvpView> {
 
     private MainMvpView view;
 
@@ -28,18 +29,17 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
         add(searchTextChangeSubject
             .throttleLast(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                new Consumer<String>() {
-                    @Override
-                    public void accept(String text) throws Exception {
-                        ArrayList<Todo> searchedList = TodoManager.search(text);
-                        if (searchedList.isEmpty()) {
-                            view.showEmtpyView();
-                        } else {
-                            view.onUpdateTodoList(searchedList);
-                        }
+            .subscribe(new Consumer<String>() {
+                @Override
+                public void accept(String text) throws Exception {
+                    ArrayList<Todo> searchedList = TodoManager.search(text);
+                    if (searchedList.isEmpty()) {
+                        view.showEmtpyView();
+                    } else {
+                        view.onUpdateTodoList(searchedList);
                     }
-                }));
+                }
+            }));
     }
 
     @Override
@@ -74,13 +74,15 @@ class MainMvpPresenterImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     @Override
     public void update(int id, String body) {
-        TodoManager.update(id, body);
-        view.onUpdateTodo(TodoManager.getTodo(id));
+        Todo todo = TodoManager.update(id, body);
+        if (todo != null) {
+            view.onUpdateTodo(todo);
+        }
     }
 
     @Override
     public void checked(int id, boolean isChecked) {
-        TodoManager.getTodo(id).setChecked(isChecked);
+        TodoManager.checked(id, isChecked);
     }
 
     @Override

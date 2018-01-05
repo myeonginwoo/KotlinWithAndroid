@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +71,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
         } else {
             presenter.loadTodoList();
         }
-
     }
 
     @Override
@@ -101,7 +101,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
-
         setSearchView(menu.findItem(R.id.menu_activity_main_search));
         return super.onCreateOptionsMenu(menu);
     }
@@ -119,7 +118,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     public void onUpdateTodoList(List<Todo> todoList) {
-        todoAdapter.clear();
+        for (Todo todo : todoList) {
+            Log.d("foo", "id : " + todo.getId() + ", body : " + todo.getBody() + ", checked : " + todo.isChecked());
+        }
         todoAdapter.addItems(todoList);
         emptyView.setVisibility(View.GONE);
     }
@@ -146,13 +147,13 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
     }
 
     @Override
-    public void onChecked(int id, boolean isChecked) {
-        presenter.checked(id, isChecked);
+    public void onClicked(int id) {
+        goTodo(id);
     }
 
     @Override
-    public void onClicked(int id) {
-        goTodo(id);
+    public void onChecked(int id, boolean isChecked) {
+        presenter.checked(id, isChecked);
     }
 
     private void createTodo() {
