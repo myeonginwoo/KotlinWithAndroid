@@ -4,10 +4,12 @@ FastCampus 에서 사용 될 샘플 프로젝트입니다.
 간단한 TodoList 예제를 통해 실습합니다.
 
 ## 필수 환경
-* Android MinSdk - 16
-* Android TargetSdk - 25
-* Kotlin version - 1.1.3
-* gradle version - 2.3.3
+* Android MinSdk - 18
+* Android buildToolVersion - 26.0.2
+* Android TargetSdkVersion - 26
+* Android CompileSdkVersion - 26
+* Kotlin version - 1.2.10
+* gradle version - 3.0.1
 
 ## 부가 사항
 * RxJava 2를 사용합니다 
