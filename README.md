@@ -9,7 +9,7 @@ FastCampus 에서 사용 될 샘플 프로젝트입니다.
 * Android TargetSdkVersion - 26
 * Android CompileSdkVersion - 26
 * Kotlin version - 1.2.10
-* gradle version - 3.0.1
+* gradle plugin version - 3.0.1
 
 ## 부가 사항
 * RxJava 2를 사용합니다 
