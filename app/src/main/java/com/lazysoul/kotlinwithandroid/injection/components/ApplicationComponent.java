@@ -17,7 +17,7 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
 
-    void injet(KotlinWithAndroid kotlinWithAndroid);
+    void inject(KotlinWithAndroid kotlinWithAndroid);
 
     SharedPreferences getSharedPreferences();
 

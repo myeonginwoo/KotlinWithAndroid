@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,7 +35,22 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     @Override
     public void onBindViewHolder(TodoHolder holder, int position) {
-        holder.draw(todoList.get(position));
+        final Todo todo = todoList.get(position);
+        holder.cb.setChecked(todo.isChecked());
+        holder.cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todo.setChecked(!todo.isChecked());
+                todoListener.onChecked(todo.getId(), todo.isChecked());
+            }
+        });
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoListener.onClicked(todo.getId());
+            }
+        });
+        holder.tv.setText(todo.getBody());
     }
 
     @Override
@@ -45,14 +59,16 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
     }
 
     void addItems(List<Todo> list) {
+        todoList.clear();
         todoList.addAll(list);
         notifyDataSetChanged();
     }
 
-    void update(int todoId) {
+    void update(Todo todo) {
         int position = -1;
         for (int i = 0; i < todoList.size(); i++) {
-            if (todoId == todoList.get(i).getId()) {
+            if (todo.getId() == todoList.get(i).getId()) {
+                todoList.get(i).setBody(todo.getBody());
                 position = i;
                 break;
             }
@@ -79,29 +95,10 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
         private CardView cv;
 
         TodoHolder(ViewGroup parent) {
-            super(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_todo, parent, false));
-            cv = (CardView) itemView.findViewById(R.id.cv_item_todo);
-            cb = (AppCompatCheckBox) itemView.findViewById(R.id.cb_item);
-            tv = (TextView) itemView.findViewById(R.id.tv_item_todo_body);
-
-        }
-
-        void draw(final Todo todo) {
-            cb.setChecked(todo.isChecked());
-            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    todoListener.onChecked(todo.getId(), isChecked);
-                }
-            });
-            cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    todoListener.onClicked(todo.getId());
-                }
-            });
-            tv.setText(todo.getBody());
+            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_todo, parent, false));
+            cv = itemView.findViewById(R.id.cv_item_todo);
+            cb = itemView.findViewById(R.id.cb_item);
+            tv = itemView.findViewById(R.id.tv_item_todo_body);
         }
     }
 }

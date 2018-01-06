@@ -6,7 +6,6 @@ import com.lazysoul.kotlinwithandroid.ui.detail.DetailActivity;
 import com.lazysoul.kotlinwithandroid.ui.main.MainActivity;
 
 import dagger.Component;
-import io.realm.Realm;
 
 /**
  * Created by Lazysoul on 2017. 7. 17..
@@ -14,8 +13,6 @@ import io.realm.Realm;
 @Component(dependencies = {ApplicationComponent.class}, modules = {ActivityModule.class})
 @ActivityScope
 public interface ActivityComponent extends ApplicationComponent {
-
-    Realm provideRealm();
 
     void inject(MainActivity activity);
 

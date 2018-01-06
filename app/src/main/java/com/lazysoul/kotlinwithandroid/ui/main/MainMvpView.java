@@ -3,6 +3,7 @@ package com.lazysoul.kotlinwithandroid.ui.main;
 import com.lazysoul.kotlinwithandroid.common.BaseMvpView;
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,9 +14,11 @@ interface MainMvpView extends BaseMvpView {
 
     void onUpdateTodoList(List<Todo> todoList);
 
+    void onUpdateTodo(Todo todo);
+
     void onCreatedTodo(Todo todo);
 
     void showEmtpyView();
 
-    void onSuccessCreateSampes();
+    void onCreatedSampes(List<Todo> todoList);
 }

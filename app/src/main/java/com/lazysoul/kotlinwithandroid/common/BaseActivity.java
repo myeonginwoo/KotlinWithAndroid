@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
                 .build();
 
         inject();
-        initPresenter(this);
+        initPresenter();
     }
 
     public ApplicationComponent getApplicationComponet() {

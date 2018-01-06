@@ -1,27 +1,17 @@
 package com.lazysoul.kotlinwithandroid.datas;
 
-import java.util.Date;
-
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by Lazysoul on 2017. 7. 9..
  */
 
-public class Todo extends RealmObject {
+public class Todo {
 
-    @PrimaryKey
     private int id;
 
     private String body;
 
     private boolean isChecked;
 
-    private Date createdAt;
-
-    @Ignore
     private boolean isFixed = false;
 
     public int getId() {
@@ -46,14 +36,6 @@ public class Todo extends RealmObject {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public boolean isFixed() {

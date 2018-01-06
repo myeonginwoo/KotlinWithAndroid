@@ -2,11 +2,11 @@ package com.lazysoul.kotlinwithandroid.singletons;
 
 import com.lazysoul.kotlinwithandroid.datas.Todo;
 
-import java.util.Calendar;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
-import io.realm.Case;
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lazysoul on 2017. 7. 12..
@@ -15,6 +15,8 @@ import io.realm.RealmResults;
 public class TodoManager {
 
     public static final String KEY_ID = "id";
+
+    public static final String KEY_BODY = "body";
 
     public static final String KEY_REQUEST_TYPE = "request_type";
 
@@ -28,34 +30,85 @@ public class TodoManager {
 
     public static final int RESULT_TYPE_UPDATED = 201;
 
-    public static RealmResults<Todo> getTodoList(Realm realm) {
-        return realm.where(Todo.class).findAllSorted("id");
+    private static ArrayList<Todo> todoList = new ArrayList<>();
+
+    public static List<Todo> getTodoList() {
+        return todoList;
     }
 
-    public static Todo load(Realm realm, int id) {
-        return realm.where(Todo.class).equalTo("id", id).findFirst();
-    }
-
-    public static void createSamleTodo(Realm realm) {
-        realm.beginTransaction();
+    public static ArrayList<Todo> createSamples() {
         for (int i = 0; i < 10; i++) {
-            Todo todo = realm.createObject(Todo.class, i);
+            Todo todo = new Todo();
+            todo.setId(i);
             todo.setChecked(false);
             todo.setBody("Todo " + i);
-            todo.setCreatedAt(Calendar.getInstance().getTime());
+            todoList.add(todo);
         }
-        realm.commitTransaction();
+        return todoList;
     }
 
-    public static int getMaxId(Realm realm) {
-        return realm.where(Todo.class)
-                .max("id")
-                .intValue();
+    public static int getMaxId() {
+        int max = 0;
+        for (Todo todo : todoList) {
+            if (todo.getId() > max) {
+                max = todo.getId();
+            }
+        }
+        return max;
     }
 
-    public static RealmResults<Todo> search(Realm realm, String text) {
-        return realm.where(Todo.class)
-                .contains("body", text, Case.INSENSITIVE)
-                .findAll();
+    @Nullable
+    public static Todo getTodo(int id) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                return todo;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Todo> search(String text) {
+        ArrayList<Todo> result = new ArrayList<>();
+        if (text.isEmpty()) {
+            result.addAll(todoList);
+        } else {
+
+            for (Todo todo : todoList) {
+                if (todo.getBody().contains(text)) {
+                    result.add(todo);
+                }
+            }
+        }
+        return result;
+    }
+
+    @NonNull
+    public static Todo insert(int id, String body) {
+        Todo todo = new Todo();
+        todo.setId(id);
+        todo.setBody(body);
+        todo.setChecked(false);
+        todoList.add(todo);
+        return todo;
+    }
+
+    @Nullable
+    public static Todo update(int id, String body) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                todo.setBody(body);
+                return todo;
+            }
+        }
+        return null;
+    }
+
+    public static void checked(int id, boolean isChecked) {
+        for (Todo todo : todoList) {
+            if (todo.getId() == id) {
+                todo.setChecked(isChecked);
+                break;
+            }
+        }
     }
 }

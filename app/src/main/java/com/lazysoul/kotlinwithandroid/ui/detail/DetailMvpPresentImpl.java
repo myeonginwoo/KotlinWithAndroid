@@ -8,23 +8,18 @@ import com.lazysoul.kotlinwithandroid.singletons.TodoManager;
 
 import android.content.Intent;
 
-import java.util.Calendar;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
-import io.realm.Realm;
 
 /**
  * Created by Lazysoul on 2017. 7. 15..
  */
 
 class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
-        implements DetailMvpPresenter<MvpView> {
+    implements DetailMvpPresenter<MvpView> {
 
     private DetailMvpView view;
-
-    private Realm realm;
 
     private Todo beforeTodo;
 
@@ -32,18 +27,17 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     private int requestType = -1;
 
-    DetailMvpPresentImpl(Realm realm) {
-        this.realm = realm;
+    DetailMvpPresentImpl() {
         add(textChangeSubject
-                .distinctUntilChanged()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean isChanged) throws Exception {
-                        beforeTodo.setFixed(isChanged);
-                        view.onChagedSaveBt();
-                    }
-                }));
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Consumer<Boolean>() {
+                @Override
+                public void accept(Boolean isChanged) throws Exception {
+                    beforeTodo.setFixed(isChanged);
+                    view.onChagedSaveBt();
+                }
+            }));
     }
 
     @Override
@@ -54,27 +48,24 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
     @Override
     public void destroy() {
         dispose();
-        realm.close();
     }
 
     @Override
     public void loadTodo(Intent intent) {
         requestType = intent
-                .getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
+            .getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
 
         switch (requestType) {
             case TodoManager.REQUEST_TYPE_CREATE:
                 beforeTodo = new Todo();
                 beforeTodo.setId(-1);
-                beforeTodo.setChecked(false);
-                beforeTodo.setCreatedAt(Calendar.getInstance().getTime());
                 beforeTodo.setBody("");
                 view.onUpdated(beforeTodo, true);
                 break;
             case TodoManager.REQUEST_TYPE_VIEW:
                 int id = intent.getIntExtra(TodoManager.KEY_ID, -1);
                 if (id != -1) {
-                    beforeTodo = TodoManager.load(realm, id);
+                    beforeTodo = TodoManager.getTodo(id);
                     view.onUpdated(beforeTodo, false);
                 }
                 break;
@@ -84,9 +75,7 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
     @Override
     public void onTextChanged(final String s) {
         if (!beforeTodo.isFixed() && isChanged(s)) {
-            realm.beginTransaction();
             beforeTodo.setFixed(true);
-            realm.commitTransaction();
         }
 
         textChangeSubject.onNext(isChanged(s));
@@ -94,15 +83,12 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     @Override
     public void saveTodo(String text) {
-        realm.beginTransaction();
         beforeTodo.setBody(text);
         beforeTodo.setFixed(false);
         if (beforeTodo.getId() == -1) {
-            beforeTodo.setId(TodoManager.getMaxId(realm) + 1);
-            beforeTodo = realm.copyToRealm(beforeTodo);
+            beforeTodo.setId(TodoManager.getMaxId() + 1);
         }
-        realm.commitTransaction();
-        view.onSaved(requestType, beforeTodo.getId());
+        view.onSaved(requestType, beforeTodo);
 
         textChangeSubject.onNext(false);
     }
