@@ -27,8 +27,6 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
     AppCompatEditText et;
 
-    Intent resultData = new Intent();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +151,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
                 break;
         }
 
+        Intent resultData = new Intent();
         resultData.putExtra(TodoManager.KEY_RESULT_TYPE, result);
         resultData.putExtra(TodoManager.KEY_ID, todo.getId());
         resultData.putExtra(TodoManager.KEY_BODY, todo.getBody());

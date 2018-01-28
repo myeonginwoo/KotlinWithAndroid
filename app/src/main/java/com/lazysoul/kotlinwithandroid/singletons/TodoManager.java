@@ -48,7 +48,7 @@ public class TodoManager {
     }
 
     public static int getMaxId() {
-        int max = 0;
+        int max = -1;
         for (Todo todo : todoList) {
             if (todo.getId() > max) {
                 max = todo.getId();

@@ -50,10 +50,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
         setSupportActionBar((Toolbar) findViewById(R.id.tb_activity_main));
 
-        RecyclerView recyclerView = findViewById(R.id.rv_activity_main);
         emptyView = findViewById(R.id.tv_activity_main_empty);
         FloatingActionButton addBt = findViewById(R.id.fa_activity_main);
 
+        RecyclerView recyclerView = findViewById(R.id.rv_activity_main);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         todoAdapter = new TodoAdapter(this);
         recyclerView.setAdapter(todoAdapter);
@@ -75,8 +75,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, TodoListe
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         presenter.destroy();
+        super.onDestroy();
     }
 
     @Override

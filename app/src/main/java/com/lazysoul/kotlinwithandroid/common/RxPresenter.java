@@ -18,7 +18,6 @@ public class RxPresenter {
     protected void dispose() {
         if (null != disposables && !disposables.isDisposed()) {
             disposables.dispose();
-            disposables = null;
         }
     }
 

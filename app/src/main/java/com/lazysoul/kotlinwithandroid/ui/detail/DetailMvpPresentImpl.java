@@ -52,8 +52,7 @@ class DetailMvpPresentImpl<MvpView extends BaseMvpView> extends RxPresenter
 
     @Override
     public void loadTodo(Intent intent) {
-        requestType = intent
-            .getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
+        requestType = intent.getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE);
 
         switch (requestType) {
             case TodoManager.REQUEST_TYPE_CREATE:

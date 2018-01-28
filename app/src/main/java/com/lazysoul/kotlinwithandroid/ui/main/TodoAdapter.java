@@ -35,22 +35,7 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     @Override
     public void onBindViewHolder(TodoHolder holder, int position) {
-        final Todo todo = todoList.get(position);
-        holder.cb.setChecked(todo.isChecked());
-        holder.cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                todo.setChecked(!todo.isChecked());
-                todoListener.onChecked(todo.getId(), todo.isChecked());
-            }
-        });
-        holder.cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                todoListener.onClicked(todo.getId());
-            }
-        });
-        holder.tv.setText(todo.getBody());
+        holder.draw(todoList.get(position));
     }
 
     @Override
@@ -99,6 +84,24 @@ class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
             cv = itemView.findViewById(R.id.cv_item_todo);
             cb = itemView.findViewById(R.id.cb_item);
             tv = itemView.findViewById(R.id.tv_item_todo_body);
+        }
+
+        void draw(final Todo todo){
+            cb.setChecked(todo.isChecked());
+            cb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    todo.setChecked(!todo.isChecked());
+                    todoListener.onChecked(todo.getId(), todo.isChecked());
+                }
+            });
+            cv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    todoListener.onClicked(todo.getId());
+                }
+            });
+            tv.setText(todo.getBody());
         }
     }
 }
