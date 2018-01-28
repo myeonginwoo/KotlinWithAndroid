@@ -67,6 +67,7 @@ public class TodoManager {
         return null;
     }
 
+    @NonNull
     public static ArrayList<Todo> search(String text) {
         ArrayList<Todo> result = new ArrayList<>();
         if (text.isEmpty()) {
