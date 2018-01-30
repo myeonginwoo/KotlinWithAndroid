@@ -9,7 +9,7 @@ ext {
     rxandroid_version = '2.0.1'
     realm_version = '4.2.0'
     dagger_version = '2.11'
-    kotlin_version = '1.2.10'
+    kotlin_version = '1.2.21'
 
     recycelrView =
             "com.android.support:recyclerview-v7:$supportLibVersion"
