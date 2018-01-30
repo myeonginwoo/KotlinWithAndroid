@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -32,7 +34,7 @@ dependencies {
     implementation rootProject.ext.cardView
     implementation rootProject.ext.rxAndroid
     implementation rootProject.ext.dagger
-    annotationProcessor rootProject.ext.daggerCompiler
+    kapt rootProject.ext.daggerCompiler
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
