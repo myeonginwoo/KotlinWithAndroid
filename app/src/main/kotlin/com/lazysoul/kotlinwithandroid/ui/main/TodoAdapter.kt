@@ -35,15 +35,13 @@ class TodoAdapter(val todoListener: TodoListener) : RecyclerView.Adapter<TodoAda
     }
 
     fun update(todo: Todo) {
-        var position = -1
-        for (i in todoList.indices) {
-            if (todo.id == todoList[i].id) {
-                todoList[i].body = todo.body
-                position = i
-                break
+        todoList.withIndex()
+            .firstOrNull { it.value.id == todo.id }
+            ?.let {
+                //                todoList[it.index].body = todo.body
+                it.value.body = todo.body
+                notifyItemChanged(it.index)
             }
-        }
-        notifyItemChanged(position)
     }
 
     fun addItem(todo: Todo) {
@@ -66,10 +64,12 @@ class TodoAdapter(val todoListener: TodoListener) : RecyclerView.Adapter<TodoAda
         private val cv: CardView = itemView.findViewById(R.id.cv_item_todo)
 
         fun draw(todo: Todo) {
-            cb.isChecked = todo.isChecked
-            cb.setOnClickListener {
-                todo.isChecked = !todo.isChecked
-                todoListener.onChecked(todo.id, todo.isChecked)
+            with(cb) {
+                isChecked = todo.isChecked
+                setOnClickListener {
+                    todo.isChecked = !todo.isChecked
+                    todoListener.onChecked(todo.id, todo.isChecked)
+                }
             }
             cv.setOnClickListener { todoListener.onClicked(todo.id) }
             tv.text = todo.body

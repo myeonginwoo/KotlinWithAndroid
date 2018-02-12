@@ -1,9 +1,7 @@
 package com.lazysoul.kotlinwithandroid.injection.module
 
-import com.lazysoul.kotlinwithandroid.injection.scopes.ActivityScope
-
 import android.app.Activity
-
+import com.lazysoul.kotlinwithandroid.injection.scopes.ActivityScope
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +14,5 @@ class ActivityModule(private val activity: Activity) {
 
     @Provides
     @ActivityScope
-    internal fun provideActivity(): Activity {
-        return activity
-    }
+    internal fun provideActivity(): Activity = activity
 }

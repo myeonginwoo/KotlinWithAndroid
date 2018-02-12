@@ -30,11 +30,11 @@ class MainActivity : BaseActivity(), MainMvpView, TodoListener {
 
     lateinit var todoAdapter: TodoAdapter
 
+    lateinit var presenter: MainMvpPresenter<MainMvpView>
+
     @Inject lateinit var sharedPreferences: SharedPreferences
 
     @Inject lateinit var editor: SharedPreferences.Editor
-
-    lateinit var presenter: MainMvpPresenter<MainMvpView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,16 +64,17 @@ class MainActivity : BaseActivity(), MainMvpView, TodoListener {
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
-            val resultType = data.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1)
-            val id = data.getIntExtra(TodoManager.KEY_ID, -1)
-            val body = data.getStringExtra(TodoManager.KEY_BODY)
-            when (resultType) {
-                TodoManager.RESULT_TYPE_CREATED -> presenter.insert(id, body)
-                TodoManager.RESULT_TYPE_UPDATED -> presenter.update(id, body)
+            data?.let {
+                val resultType = it.getIntExtra(TodoManager.KEY_RESULT_TYPE, -1)
+                val id = it.getIntExtra(TodoManager.KEY_ID, -1)
+                val body = it.getStringExtra(TodoManager.KEY_BODY)
+                when (resultType) {
+                    TodoManager.RESULT_TYPE_CREATED -> presenter.insert(id, body)
+                    TodoManager.RESULT_TYPE_UPDATED -> presenter.update(id, body)
+                }
             }
-
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

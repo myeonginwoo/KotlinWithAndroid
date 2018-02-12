@@ -10,7 +10,8 @@ import dagger.Component
 /**
  * Created by Lazysoul on 2017. 7. 17..
  */
-@Component(dependencies = [(ApplicationComponent::class)], modules = [(ActivityModule::class)])
+@Component(dependencies = [(ApplicationComponent::class)],
+    modules = [(ActivityModule::class)])
 @ActivityScope
 interface ActivityComponent : ApplicationComponent {
 

@@ -7,7 +7,7 @@ import io.reactivex.disposables.Disposable
  * Created by Lazysoul on 2017. 7. 15..
  */
 
-open class RxPresenter protected constructor() {
+open class RxPresenter {
 
     private val disposables: CompositeDisposable by lazy { CompositeDisposable() }
 

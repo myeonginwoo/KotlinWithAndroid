@@ -55,18 +55,16 @@ object TodoManager {
         return result
     }
 
-    fun insert(id: Int, body: String): Todo = Todo(id)
-        .apply {
-            this.body = body
-            isChecked = false
-        }
-        .also { todoList.add(it) }
+    fun insert(id: Int, body: String): Todo =
+        Todo(id, body, true)
+            .also { todoList.add(it) }
 
     fun update(id: Int, body: String): Todo? = todoList
         .firstOrNull { it.id == id }
         ?.also { it.body = body }
 
     fun checked(id: Int, isChecked: Boolean) {
-        todoList.firstOrNull { it.id == id }?.also { it.isChecked = isChecked }
+        todoList.firstOrNull { it.id == id }
+            ?.also { it.isChecked = isChecked }
     }
 }

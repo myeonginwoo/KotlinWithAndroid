@@ -46,8 +46,8 @@ class DetailActivity : BaseActivity(), DetailMvpView {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         presenter.destroy()
+        super.onDestroy()
     }
 
     override fun onBackPressed() {

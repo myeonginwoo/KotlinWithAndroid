@@ -44,8 +44,7 @@ class DetailMvpPresentImpl<in MvpView : BaseMvpView> : RxPresenter(), DetailMvpP
     }
 
     override fun loadTodo(intent: Intent) {
-        requestType = intent.getIntExtra(TodoManager.KEY_REQUEST_TYPE,
-            TodoManager.REQUEST_TYPE_CREATE)
+        requestType = intent.getIntExtra(TodoManager.KEY_REQUEST_TYPE, TodoManager.REQUEST_TYPE_CREATE)
 
         when (requestType) {
             TodoManager.REQUEST_TYPE_CREATE -> {
